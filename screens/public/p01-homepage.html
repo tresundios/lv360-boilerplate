@@ -64,6 +64,15 @@
       --color-grey-100:      #F1F5F9;
       --color-white:         #FFFFFF;
 
+      /* Logo-based gradient colors */
+      --gradient-primary: linear-gradient(135deg, #2563EB 0%, #3B82F6 50%, #10B981 100%);
+      --gradient-secondary: linear-gradient(135deg, #B91C1C 0%, #C8922A 50%, #2563EB 100%);
+      --gradient-accent: linear-gradient(135deg, #15803D 0%, #2563EB 50%, #B91C1C 100%);
+      --gradient-hero: linear-gradient(135deg, rgba(37, 99, 235, 0.9) 0%, rgba(59, 130, 246, 0.8) 25%, rgba(21, 128, 61, 0.7) 50%, rgba(200, 146, 42, 0.6) 75%, rgba(185, 28, 28, 0.5) 100%);
+      --gradient-section: linear-gradient(135deg, #2563EB 0%, #3B82F6 20%, #15803D 40%, #C8922A 60%, #B91C1C 80%, #2563EB 100%);
+      --gradient-card: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(59, 130, 246, 0.1) 25%, rgba(21, 128, 61, 0.1) 50%, rgba(200, 146, 42, 0.1) 75%, rgba(185, 28, 28, 0.1) 100%);
+      --gradient-text: linear-gradient(135deg, #2563EB 0%, #3B82F6 33%, #15803D 66%, #C8922A 100%);
+
       /* Typography */
       --font-sans:  'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       --font-mono:  'Fira Code', 'Cascadia Code', monospace;
@@ -139,11 +148,38 @@
 
     /* Header */
     .header {
-      background: var(--color-white);
-      border-bottom: var(--border-default);
+      background: transparent;
+      border-bottom: none;
       position: sticky;
       top: 0;
       z-index: 100;
+      transition: background 0.3s ease;
+    }
+
+    .header.scrolled {
+      background: var(--color-white);
+      border-bottom: var(--border-default);
+    }
+
+    .header.scrolled .nav-link {
+      color: var(--color-grey-700);
+    }
+
+    .header.scrolled .nav-link:hover {
+      color: var(--color-primary);
+    }
+
+    .header.scrolled .btn-ghost {
+      color: var(--color-grey-700);
+      border: 1px solid var(--color-grey-300);
+    }
+
+    .header.scrolled .btn-ghost:hover {
+      background: rgba(15, 23, 42, 0.02);
+    }
+
+    .header.scrolled .mobile-menu-toggle {
+      color: var(--color-grey-700);
     }
 
     .header-container {
@@ -176,10 +212,10 @@
     .nav-link {
       font-size: var(--text-sm);
       font-weight: 600;
-      color: var(--color-grey-700);
+      color: white;
       text-decoration: none;
     }
-    .nav-link:hover { color: var(--color-primary); text-decoration: none; }
+    .nav-link:hover { color: rgba(255, 255, 255, 0.8); text-decoration: none; }
 
     .header-actions {
       display: flex;
@@ -198,7 +234,14 @@
 
     .main-bar {
       max-width: 1280px !important;
-      border-radius: ;
+      border-radius: 0 0 16px 16px;
+      background:
+        radial-gradient(1200px 600px at 20% 10%, rgba(37, 99, 235, 0.14), rgba(255,255,255,0) 60%),
+        radial-gradient(900px 450px at 90% 0%, rgba(2, 132, 199, 0.12), rgba(255,255,255,0) 55%),
+        rgba(255, 255, 255, 0.8) !important;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(37, 99, 235, 0.2);
     }
 
     .lang-btn {
@@ -244,8 +287,8 @@
     .btn:active { transform: scale(0.98); }
     .btn-primary { background: var(--color-primary); color: white; }
     .btn-primary:hover { background: var(--color-primary-dark); text-decoration: none; }
-    .btn-ghost { background: transparent; color: var(--color-grey-700); border: 1px solid var(--color-grey-300); }
-    .btn-ghost:hover { background: rgba(15, 23, 42, 0.02); text-decoration: none; }
+    .btn-ghost { background: transparent; color: white; border: 1px solid rgba(255, 255, 255, 0.5); }
+    .btn-ghost:hover { background: rgba(255, 255, 255, 0.1); text-decoration: none; }
 
     /* Mobile menu */
     .mobile-menu-toggle {
@@ -254,6 +297,7 @@
       border: none;
       cursor: pointer;
       padding: var(--space-2);
+      color: white;
     }
 
     .mobile-menu-icon {
@@ -299,7 +343,7 @@
     }
 
     .hero-title {
-      font-size: 46px;
+      font-size: 36px;
       font-weight: 800;
       line-height: 1.2;
       letter-spacing: -0.02em;
@@ -1349,9 +1393,26 @@
 
     /* Footer */
     .footer {
-      background: var(--color-grey-900);
+      background: var(--gradient-section);
       color: white;
       padding: var(--space-16) var(--space-6) var(--space-8);
+      position: relative;
+    }
+    
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.9) 100%);
+      z-index: 1;
+    }
+    
+    .footer > * {
+      position: relative;
+      z-index: 2;
     }
 
     .footer-container {
@@ -1595,10 +1656,20 @@
       padding-top: 80px; /* Move hero section down slightly */
       min-height: 100vh; /* Full viewport height */
       box-sizing: border-box;
+      width: 100%;
+      background:
+        radial-gradient(1200px 600px at 20% 10%, rgba(37, 99, 235, 0.14), rgba(255,255,255,0) 60%),
+        radial-gradient(900px 450px at 90% 0%, rgba(2, 132, 199, 0.12), rgba(255,255,255,0) 55%),
+        var(--color-grey-100);
     }
     
     /* Ensure hero content fills the height properly */
     .twm-home1-banner-section > .row {
+      max-width: 1280px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 24px;
+      padding-right: 24px;
       min-height: calc(100vh - 80px);
       align-items: center;
       display: flex;
@@ -1689,25 +1760,149 @@
       width: 100%;
       height: 100%;
       
-      left: 0;
+      left: -160px;
       z-index: 0;
       pointer-events: none;
     }
     
-    /* Position Vietnamese flag on circles - right side */
-    .vietnamese-flag-position {
+    /* Position Vietnamese flag on circles - middle relative to circles */
+    /* .vietnamese-flag-position {
       position: absolute;
-    left: 10%;
-      z-index: 3;
+      left: 55%;
+      top: 70%;
+      transform: translate(-50%, -50%);
+      z-index: 20;
+      width: 500px;
+      height: 500px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    } */
+
+    /* Responsive adjustments */
+    @media (min-width: 1401px) and (max-width: 1920px) {
+      .twm-home1-banner-section .twm-img-bg-circle-area {
+        left: -140px;
+      }
+      .vietnamese-flag-position {
+           position: absolute;
+        left: 60%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 20;
+        width: 500px;
+        height: 500px;
+        
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    @media (min-width: 1201px) and (max-width: 1400px) {
+      .twm-home1-banner-section .twm-img-bg-circle-area {
+        left: -120px;
+      }
+      .vietnamese-flag-position {
+         position: absolute;
+        left: 35%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 20;
+        width: 500px;
+        height: 500px;
+       
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    @media (min-width: 993px) and (max-width: 1200px) {
+      .twm-home1-banner-section .twm-img-bg-circle-area {
+        left: -100px;
+      }
+      .vietnamese-flag-position {
+
+           position: absolute;
+        left: 40%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 20;
+        width: 400px;
+        height: 400px;
+       
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    @media (min-width: 769px) and (max-width: 992px) {
+      .twm-home1-banner-section .twm-img-bg-circle-area {
+        left: 80px;
+      }
+      .vietnamese-flag-position {
+         position: absolute;
+        left: 58%;
+        top: 30%;
+        transform: translate(-50%, -50%);
+        z-index: 20;
+        width: 400px;
+        height: 400px;
+       
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .twm-home1-banner-section .twm-img-bg-circle-area {
+        left: -90px;
+      }
+      .vietnamese-flag-position {
+          position: absolute;
+        left: 58%;
+        top: 30%;
+        transform: translate(-50%, -50%);
+        z-index: 20;
+        width: 400px;
+        height: 400px;
+       
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    /* Extra large screens above 1800px */
+    @media (min-width: 1801px) {
+      .twm-home1-banner-section .twm-img-bg-circle-area {
+        left: -160px;
+      }
+      .vietnamese-flag-position {
+          position: absolute;
+        left: 55%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 20;
+        width: 500px;
+        height: 500px;
+       
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    /* Ensure owl carousel shows only one item at a time */
+    .vietnamese-flag-carousel {
+      overflow: hidden;
+    }
+    .vietnamese-flag-carousel .owl-stage {
+      display: flex;
+    }
+    .vietnamese-flag-carousel .owl-item {
+      min-width: 100%;
+      flex-shrink: 0;
     }
     
-    .vietnamese-flag-img {
-    
-      border-radius: 8px;
-      max-width: 100% !important;
-      max-height: 100% !important;
-      animation: float 4s ease-in-out infinite;
-    }
+   
 
     /* Ensure sticky header stays on top */
     .sticky-header {
@@ -1809,7 +2004,7 @@
         <!--Left Section-->
         <div class="col-xl-6 col-lg-6 col-md-12">
           <div class="twm-bnr-left-section">
-            <div class="twm-bnr-title-small">We Have <span class="site-text-primary">208,000+</span> Live Jobs</div>
+            <div class="twm-bnr-title-small" data-i18n="jobCount">We Have <span class="site-text-primary">208,000+</span> Live Jobs</div>
             <div class="twm-bnr-title-large" id="hero-title" data-i18n="heroTitle">Find the <span class="site-text-primary">job</span> that fits your life</div>
             <div class="twm-bnr-discription" data-i18n="heroSubtitle">Type your keyword, then click search to find your perfect job.</div>
 
@@ -1821,10 +2016,159 @@
                     <label>What</label>
                     <select class="wt-search-bar-select selectpicker" data-live-search="true" title="" id="j-Job_Title" data-bv-field="size">
                       <option disabled selected value="">Select Category</option>
-                      <option selected>Job Title</option>
-                      <option>Web Designer</option>
-                      <option>Developer</option>
-                      <option>Accountant</option>
+                      <option selected>All Jobs</option>
+                      <optgroup label="Technology & IT">
+                        <option>Software Developer</option>
+                        <option>Web Designer</option>
+                        <option>UI/UX Designer</option>
+                        <option>Data Analyst</option>
+                        <option>Network Administrator</option>
+                        <option>Cybersecurity Specialist</option>
+                        <option>DevOps Engineer</option>
+                        <option>Mobile App Developer</option>
+                        <option>Database Administrator</option>
+                        <option>IT Support</option>
+                      </optgroup>
+                      <optgroup label="Business & Finance">
+                        <option>Accountant</option>
+                        <option>Financial Analyst</option>
+                        <option>Business Analyst</option>
+                        <option>Marketing Manager</option>
+                        <option>Sales Representative</option>
+                        <option>HR Manager</option>
+                        <option>Project Manager</option>
+                        <option>Business Development</option>
+                        <option>Customer Service</option>
+                        <option>Administrative Assistant</option>
+                      </optgroup>
+                      <optgroup label="Blue Collar & Skilled Trades">
+                        <option>Construction Worker</option>
+                        <option>Electrician</option>
+                        <option>Plumber</option>
+                        <option>Carpenter</option>
+                        <option>Mechanic</option>
+                        <option>Welder</option>
+                        <option>Painter</option>
+                        <option>Roofer</option>
+                        <option>HVAC Technician</option>
+                        <option>Heavy Equipment Operator</option>
+                        <option>Truck Driver</option>
+                        <option>Warehouse Worker</option>
+                        <option>Factory Worker</option>
+                        <option>Packer</option>
+                        <option>Quality Control Inspector</option>
+                        <option>Machine Operator</option>
+                        <option>Assembler</option>
+                        <option>Maintenance Technician</option>
+                        <option>Janitor/Cleaner</option>
+                        <option>Security Guard</option>
+                      </optgroup>
+                      <optgroup label="Healthcare & Medical">
+                        <option>Doctor</option>
+                        <option>Nurse</option>
+                        <option>Medical Assistant</option>
+                        <option>Pharmacist</option>
+                        <option>Lab Technician</option>
+                        <option>Physical Therapist</option>
+                        <option>Dental Assistant</option>
+                        <option>Medical Secretary</option>
+                        <option>Home Health Aide</option>
+                        <option>Paramedic</option>
+                      </optgroup>
+                      <optgroup label="Education & Training">
+                        <option>Teacher</option>
+                        <option>Professor</option>
+                        <option>Tutor</option>
+                        <option>Training Instructor</option>
+                        <option>Librarian</option>
+                        <option>Teaching Assistant</option>
+                        <option>Education Administrator</option>
+                        <option>Coach</option>
+                      </optgroup>
+                      <optgroup label="Hospitality & Service">
+                        <option>Waiter/Waitress</option>
+                        <option>Cook/Chef</option>
+                        <option>Hotel Receptionist</option>
+                        <option>Housekeeping Staff</option>
+                        <option>Barista</option>
+                        <option>Bartender</option>
+                        <option>Host/Hostess</option>
+                        <option>Food Server</option>
+                        <option>Event Staff</option>
+                        <option>Tour Guide</option>
+                      </optgroup>
+                      <optgroup label="Retail & Sales">
+                        <option>Sales Associate</option>
+                        <option>Cashier</option>
+                        <option>Store Manager</option>
+                        <option>Merchandiser</option>
+                        <option>Inventory Clerk</option>
+                        <option>Customer Service Rep</option>
+                        <option>Retail Sales</option>
+                        <option>Product Demonstrator</option>
+                      </optgroup>
+                      <optgroup label="Transportation & Logistics">
+                        <option>Delivery Driver</option>
+                        <option>Bus Driver</option>
+                        <option>Taxi Driver</option>
+                        <option>Logistics Coordinator</option>
+                        <option>Supply Chain Analyst</option>
+                        <option>Shipping/Receiving Clerk</option>
+                        <option>Dispatcher</option>
+                        <option>Forklift Operator</option>
+                      </optgroup>
+                      <optgroup label="Creative & Design">
+                        <option>Graphic Designer</option>
+                        <option>Photographer</option>
+                        <option>Video Editor</option>
+                        <option>Content Writer</option>
+                        <option>Social Media Manager</option>
+                        <option>Copywriter</option>
+                        <option>Illustrator</option>
+                        <option>Fashion Designer</option>
+                        <option>Interior Designer</option>
+                      </optgroup>
+                      <optgroup label="Engineering & Technical">
+                        <option>Civil Engineer</option>
+                        <option>Mechanical Engineer</option>
+                        <option>Electrical Engineer</option>
+                        <option>Chemical Engineer</option>
+                        <option>Industrial Engineer</option>
+                        <option>Quality Engineer</option>
+                        <option>Technical Writer</option>
+                        <option>Surveyor</option>
+                        <option>Draftsman</option>
+                      </optgroup>
+                      <optgroup label="Legal & Professional">
+                        <option>Lawyer</option>
+                        <option>Legal Assistant</option>
+                        <option>Paralegal</option>
+                        <option>Notary</option>
+                        <option>Compliance Officer</option>
+                        <option>Auditor</option>
+                        <option>Consultant</option>
+                      </optgroup>
+                      <optgroup label="Agriculture & Environment">
+                        <option>Farm Worker</option>
+                        <option>Agricultural Technician</option>
+                        <option>Landscaper</option>
+                        <option>Environmental Specialist</option>
+                        <option>Forestry Worker</option>
+                        <option>Horticulturist</option>
+                        <option>Pest Control</option>
+                      </optgroup>
+                      <optgroup label="Other Services">
+                        <option>Beautician/Hair Stylist</option>
+                        <option>Massage Therapist</option>
+                        <option>Personal Trainer</option>
+                        <option>Childcare Provider</option>
+                        <option>Elderly Care</option>
+                        <option>Pet Groomer</option>
+                        <option>Real Estate Agent</option>
+                        <option>Insurance Agent</option>
+                        <option>Call Center Agent</option>
+                        <option>Data Entry Clerk</option>
+                      </optgroup>
                     </select>
                   </div>
 
@@ -1833,10 +2177,66 @@
                     <label>Type</label>
                     <select class="wt-search-bar-select selectpicker" data-live-search="true" title="" id="j-All_Category" data-bv-field="size">
                       <option disabled selected value="">Select Category</option>
-                      <option selected data-i18n="allProvinces">All Category</option>
-                      <option>Web Designer</option>
-                      <option>Developer</option>
-                      <option>Accountant</option>
+                      <option selected>All Categories</option>
+                      <optgroup label="Industry Sectors">
+                        <option>Technology/IT</option>
+                        <option>Manufacturing</option>
+                        <option>Construction</option>
+                        <option>Healthcare</option>
+                        <option>Education</option>
+                        <option>Retail</option>
+                        <option>Hospitality</option>
+                        <option>Transportation</option>
+                        <option>Banking/Finance</option>
+                        <option>Insurance</option>
+                        <option>Real Estate</option>
+                        <option>Government</option>
+                        <option>Non-profit</option>
+                        <option>Agriculture</option>
+                        <option>Energy/Utilities</option>
+                        <option>Telecommunications</option>
+                        <option>Media/Entertainment</option>
+                        <option>Consulting</option>
+                        <option>Legal</option>
+                        <option>Logistics</option>
+                      </optgroup>
+                      <optgroup label="Employment Type">
+                        <option>Full-time</option>
+                        <option>Part-time</option>
+                        <option>Contract</option>
+                        <option>Temporary</option>
+                        <option>Seasonal</option>
+                        <option>Internship</option>
+                        <option>Freelance</option>
+                        <option>Remote</option>
+                        <option>Hybrid</option>
+                      </optgroup>
+                      <optgroup label="Skill Level">
+                        <option>Entry Level</option>
+                        <option>Mid Level</option>
+                        <option>Senior Level</option>
+                        <option>Manager</option>
+                        <option>Executive</option>
+                        <option>Skilled Labor</option>
+                        <option>Unskilled Labor</option>
+                        <option>Professional</option>
+                        <option>Technical</option>
+                        <option>Administrative</option>
+                      </optgroup>
+                      <optgroup label="Work Environment">
+                        <option>Office</option>
+                        <option>Field Work</option>
+                        <option>Factory/Plant</option>
+                        <option>Construction Site</option>
+                        <option>Warehouse</option>
+                        <option>Retail Store</option>
+                        <option>Restaurant</option>
+                        <option>Hospital/Clinic</option>
+                        <option>School</option>
+                        <option>Home-based</option>
+                        <option>Outdoor</option>
+                        <option>Vehicle-based</option>
+                      </optgroup>
                     </select>
                   </div>
 
@@ -1844,7 +2244,74 @@
                   <div class="form-group col-xl-3 col-lg-6 col-md-6">
                     <label>Location</label>
                     <div class="twm-inputicon-box">
-                      <input name="username" type="text" required class="form-control" placeholder="Search...">
+                      <select class="wt-search-bar-select selectpicker" data-live-search="true" title="" id="j-Location" data-bv-field="size">
+                        <option disabled selected value="">Select Location</option>
+                        <option selected data-i18n="allProvinces">All Provinces</option>
+                        <option data-i18n="hanoi">Hà Nội</option>
+                        <option data-i18n="hcmc">TP. Hồ Chí Minh</option>
+                        <option data-i18n="danang">Đà Nẵng</option>
+                        <option data-i18n="haiphong">Hải Phòng</option>
+                        <option data-i18n="cantho">Cần Thơ</option>
+                        <option data-i18n="binhduong">Bình Dương</option>
+                        <option data-i18n="dongnai">Đồng Nai</option>
+                        <option>An Giang</option>
+                        <option>Bà Rịa - Vũng Tàu</option>
+                        <option>Bắc Giang</option>
+                        <option>Bắc Kạn</option>
+                        <option>Bạc Liêu</option>
+                        <option>Bắc Ninh</option>
+                        <option>Bến Tre</option>
+                        <option>Bình Định</option>
+                        <option>Bình Dương</option>
+                        <option>Bình Phước</option>
+                        <option>Bình Thuận</option>
+                        <option>Cà Mau</option>
+                        <option>Cao Bằng</option>
+                        <option>Đắk Lắk</option>
+                        <option>Đắk Nông</option>
+                        <option>Điện Biên</option>
+                        <option>Đồng Nai</option>
+                        <option>Đồng Tháp</option>
+                        <option>Gia Lai</option>
+                        <option>Hà Giang</option>
+                        <option>Hà Nam</option>
+                        <option>Hà Tĩnh</option>
+                        <option>Hải Dương</option>
+                        <option>Hậu Giang</option>
+                        <option>Hòa Bình</option>
+                        <option>Hưng Yên</option>
+                        <option>Kiên Giang</option>
+                        <option>Kon Tum</option>
+                        <option>Lai Châu</option>
+                        <option>Lâm Đồng</option>
+                        <option>Lạng Sơn</option>
+                        <option>Lào Cai</option>
+                        <option>Long An</option>
+                        <option>Nam Định</option>
+                        <option>Nghệ An</option>
+                        <option>Ninh Bình</option>
+                        <option>Ninh Thuận</option>
+                        <option>Phú Thọ</option>
+                        <option>Phú Yên</option>
+                        <option>Quảng Bình</option>
+                        <option>Quảng Nam</option>
+                        <option>Quảng Ngãi</option>
+                        <option>Quảng Ninh</option>
+                        <option>Quảng Trị</option>
+                        <option>Sóc Trăng</option>
+                        <option>Sơn La</option>
+                        <option>Tây Ninh</option>
+                        <option>Thái Bình</option>
+                        <option>Thái Nguyên</option>
+                        <option>Thanh Hóa</option>
+                        <option>Thừa Thiên Huế</option>
+                        <option>Tiền Giang</option>
+                        <option>Trà Vinh</option>
+                        <option>Tuyên Quang</option>
+                        <option>Vĩnh Long</option>
+                        <option>Vĩnh Phúc</option>
+                        <option>Yên Bái</option>
+                      </select>
                       <i class="twm-input-icon fas fa-map-marker-alt"></i>
                     </div>
                   </div>
@@ -1860,10 +2327,16 @@
 
             <div class="twm-bnr-popular-search">
               <span class="twm-title" data-i18n="popularLabel">Popular Searches:</span>
-              <a href="job-list.html">Developer</a> ,
-              <a href="job-list.html">Designer</a> ,
-              <a href="job-list.html">Architect</a> ,
-              <a href="job-list.html">Engineer</a> ...
+              <a href="job-list.html">Kế toán</a> ,
+              <a href="job-list.html">Nhân viên kinh doanh</a> ,
+              <a href="job-list.html">Lập trình viên</a> ,
+              <a href="job-list.html">Kỹ sư</a> ,
+              <a href="job-list.html">Thiết kế đồ họa</a> ,
+              <a href="job-list.html">Marketing</a> ,
+              <a href="job-list.html">Nhân viên văn phòng</a> ,
+              <a href="job-list.html">Công nhân sản xuất</a> ,
+              <a href="job-list.html">Tài xế</a> ,
+              <a href="job-list.html">Phục vụ</a> ...
             </div>
           </div>
         </div>
@@ -1878,21 +2351,15 @@
               <div class="twm-img-bg-circle3"><span></span></div>
             </div>
 
-            <div class="twm-bnr-right-carousel">
-              
+            
               <!-- Vietnamese Flag Carousel positioned on circles -->
               <div class="vietnamese-flag-position">
-                <div class="owl-carousel vietnamese-flag-carousel">
-                  <div class="item">
-                    <img src="../../assets/images/vietnamese1.png" alt="Vietnamese Flag" class="vietnamese-flag-img">
-                  </div>
-                  <div class="item">
-                    <img src="../../assets/images/vietnamese2.png" alt="Vietnamese Flag" class="vietnamese-flag-img">
-                  </div>
-                </div>
+                 <img src="../../assets/images/vietnamese1.png" alt="Vietnamese Flag" class="vietnamese-flag-img">
+
+                
               </div>
               
-              <div class="twm-bnr-blocks-position-wrap">
+              <!-- <div class="twm-bnr-blocks-position-wrap"> -->
                 <!--icon-block-1-->
                 <!-- <div class="twm-bnr-blocks twm-bnr-blocks-position-1">
                   <div class="twm-icon">
@@ -1936,9 +2403,9 @@
                     <p class="icon-content-info">Jobs Done</p>
                   </div>
                 </div> -->
-              </div>
+              <!-- </div> -->
 
-            </div>
+           
 
             <!--Small Ring Left-->
             <div class="twm-small-ring-l slide-top-animation"></div>
@@ -1963,113 +2430,113 @@
         </div>
 
         <div class="jobs-grid">
-          <!-- Job Card 1 -->
-          <a href="p03-job-detail.html" class="job-card" aria-label="Senior Backend Engineer at TechCorp Vietnam JSC">
+          <!-- Job Card 1 - Construction Worker -->
+          <a href="p03-job-detail.html" class="job-card" aria-label="Công nhân xây dựng tại Xây Dựng Phú Mỹ">
             <div class="job-header">
-              <div class="company-logo">TCV</div>
+              <div class="company-logo">PMP</div>
               <div>
-                <h3 class="job-title">Senior Backend Engineer</h3>
+                <h3 class="job-title">Công nhân xây dựng</h3>
                 <p class="company-name">
-                  TechCorp Vietnam JSC
+                  Xây Dựng Phú Mỹ
                   <span class="verified-badge" data-i18n="verifiedBadge">✓ Verified</span>
                 </p>
               </div>
             </div>
             <div class="job-meta">
+              <span class="job-meta-item">📍 TP. Hồ Chí Minh</span>
+              <span class="job-meta-item">💰 12.000.000 – 18.000.000 VND/tháng</span>
+              <span class="job-meta-item">📅 1 day ago</span>
+            </div>
+            <span class="job-type" data-i18n="jobTypeFullTime">Full-time</span>
+          </a>
+
+          <!-- Job Card 2 - Electrician -->
+          <a href="p03-job-detail.html" class="job-card" aria-label="Thợ điện tại Điện Lực Việt Nam">
+            <div class="job-header">
+              <div class="company-logo">ELV</div>
+              <div>
+                <h3 class="job-title">Thợ điện công nghiệp</h3>
+                <p class="company-name">Điện Lực Việt Nam</p>
+              </div>
+            </div>
+            <div class="job-meta">
               <span class="job-meta-item">📍 Hà Nội</span>
-              <span class="job-meta-item">💰 25.000.000 – 40.000.000 VND/tháng</span>
+              <span class="job-meta-item">💰 15.000.000 – 22.000.000 VND/tháng</span>
               <span class="job-meta-item">📅 2 days ago</span>
             </div>
             <span class="job-type" data-i18n="jobTypeFullTime">Full-time</span>
           </a>
 
-          <!-- Job Card 2 -->
-          <a href="p03-job-detail.html" class="job-card" aria-label="UI/UX Designer at DataVN Ltd">
+          <!-- Job Card 3 - Mechanic -->
+          <a href="p03-job-detail.html" class="job-card" aria-label="Thợ sửa chữa xe máy tại Honda Việt Nam">
             <div class="job-header">
-              <div class="company-logo">DVN</div>
+              <div class="company-logo">HVN</div>
               <div>
-                <h3 class="job-title">UI/UX Designer</h3>
-                <p class="company-name">DataVN Ltd</p>
-              </div>
-            </div>
-            <div class="job-meta">
-              <span class="job-meta-item">📍 TP. Hồ Chí Minh</span>
-              <span class="job-meta-item">💰 Thương lượng</span>
-              <span class="job-meta-item">📅 3 days ago</span>
-            </div>
-            <span class="job-type" data-i18n="jobTypeFullTime">Full-time</span>
-          </a>
-
-          <!-- Job Card 3 -->
-          <a href="p03-job-detail.html" class="job-card" aria-label="Digital Marketing Manager at FinApp Vietnam">
-            <div class="job-header">
-              <div class="company-logo">FAV</div>
-              <div>
-                <h3 class="job-title">Digital Marketing Manager</h3>
+                <h3 class="job-title">Thợ sửa chữa xe máy</h3>
                 <p class="company-name">
-                  FinApp Vietnam
+                  Honda Việt Nam
                   <span class="verified-badge" data-i18n="verifiedBadge">✓ Verified</span>
                 </p>
               </div>
             </div>
             <div class="job-meta">
               <span class="job-meta-item">📍 Đà Nẵng</span>
-              <span class="job-meta-item">💰 18.000.000 – 28.000.000 VND/tháng</span>
-              <span class="job-meta-item">📅 1 week ago</span>
+              <span class="job-meta-item">💰 10.000.000 – 16.000.000 VND/tháng</span>
+              <span class="job-meta-item">📅 3 days ago</span>
             </div>
             <span class="job-type" data-i18n="jobTypeFullTime">Full-time</span>
           </a>
 
-          <!-- Job Card 4 -->
-          <a href="p03-job-detail.html" class="job-card" aria-label="React Frontend Developer at StartupVN">
+          <!-- Job Card 4 - Truck Driver -->
+          <a href="p03-job-detail.html" class="job-card" aria-label="Tài xế tải tại Giao Thông Vận Tải">
             <div class="job-header">
-              <div class="company-logo">SVN</div>
+              <div class="company-logo">GTV</div>
               <div>
-                <h3 class="job-title">React Frontend Developer</h3>
-                <p class="company-name">StartupVN</p>
+                <h3 class="job-title">Tài xế tải (B2)</h3>
+                <p class="company-name">Giao Thông Vận Tải</p>
               </div>
             </div>
             <div class="job-meta">
-              <span class="job-meta-item">📍 Hà Nội</span>
-              <span class="job-meta-item">💰 20.000.000 – 35.000.000 VND/tháng</span>
-              <span class="job-meta-item">📅 4 days ago</span>
+              <span class="job-meta-item">📍 Bình Dương</span>
+              <span class="job-meta-item">💰 14.000.000 – 20.000.000 VND/tháng</span>
+              <span class="job-meta-item">📅 1 day ago</span>
             </div>
-            <span class="job-type" data-i18n="jobTypeRemote">Remote</span>
+            <span class="job-type" data-i18n="jobTypeFullTime">Full-time</span>
           </a>
 
-          <!-- Job Card 5 -->
-          <a href="p03-job-detail.html" class="job-card" aria-label="Data Analyst at MegaCorp Vietnam">
+          <!-- Job Card 5 - Warehouse Worker -->
+          <a href="p03-job-detail.html" class="job-card" aria-label="Nhân viên kho tại Logistics Việt">
             <div class="job-header">
-              <div class="company-logo">MCV</div>
+              <div class="company-logo">LVN</div>
               <div>
-                <h3 class="job-title">Data Analyst</h3>
+                <h3 class="job-title">Nhân viên kho</h3>
                 <p class="company-name">
-                  MegaCorp Vietnam
+                  Logistics Việt
                   <span class="verified-badge" data-i18n="verifiedBadge">✓ Verified</span>
                 </p>
               </div>
             </div>
             <div class="job-meta">
-              <span class="job-meta-item">📍 TP. Hồ Chí Minh</span>
-              <span class="job-meta-item">💰 22.000.000 – 30.000.000 VND/tháng</span>
-              <span class="job-meta-item">📅 5 days ago</span>
+              <span class="job-meta-item">📍 Đồng Nai</span>
+              <span class="job-meta-item">💰 8.000.000 – 12.000.000 VND/tháng</span>
+              <span class="job-meta-item">📅 2 days ago</span>
             </div>
             <span class="job-type" data-i18n="jobTypeFullTime">Full-time</span>
           </a>
 
-          <!-- Job Card 6 -->
-          <a href="p03-job-detail.html" class="job-card" aria-label="Product Manager at TechVN Group">
+          <!-- Job Card 6 - Welder -->
+          <a href="p03-job-detail.html" class="job-card" aria-label="Thợ hàn tại Cơ Khí Vina">
             <div class="job-header">
-              <div class="company-logo">TVG</div>
+              <div class="company-logo">CKV</div>
               <div>
-                <h3 class="job-title">Product Manager</h3>
-                <p class="company-name">TechVN Group</p>
+                <h3 class="job-title">Thợ hàn công nghiệp</h3>
+                <p class="company-name">Cơ Khí Vina</p>
               </div>
             </div>
             <div class="job-meta">
-              <span class="job-meta-item">📍 Hà Nội</span>
-              <span class="job-meta-item">💰 Thương lượng</span>
-              <span class="job-meta-item">📅 1 week ago</span>
+              <span class="job-meta-item">📍 Hải Phòng</span>
+              <span class="job-meta-item">💰 16.000.000 – 25.000.000 VND/tháng</span>
+              <span class="job-meta-item">📅 4 days ago</span>
             </div>
             <span class="job-type" data-i18n="jobTypeFullTime">Full-time</span>
           </a>
@@ -2418,7 +2885,7 @@
       <div class="footer-content">
         <!-- Logo (RULE G-003) -->
         <div class="footer-column">
-          <img src="../../assets/images/logo.png" alt="LàmViệc360" class="logo-img" style="height: 28px; margin-bottom: var(--space-4);">
+          <img src="../../assets/images/logo.png" alt="LàmViệc360" class="logo-img" style="height: 40px; margin-bottom: var(--space-4);">
           <p style="color: rgba(255,255,255,0.6); font-size: var(--text-sm); margin: 0;" data-i18n="footerDesc">
             Your trusted partner for finding the perfect job in Vietnam
           </p>
@@ -2497,6 +2964,7 @@
         navBrowseCompanies: 'Browse Companies',
         navSignIn: 'Sign In',
         navSignUp: 'Sign Up',
+        jobCount: 'Chúng tôi có <span class="site-text-primary">208.000+</span> việc làm',
         heroTitle: 'Tìm việc làm phù hợp với bạn',
         heroSubtitle: 'Hàng ngàn cơ hội việc làm tại Việt Nam',
         searchPlaceholder: '🔍 Job title, keyword, company...',
@@ -2522,6 +2990,19 @@
         jobTypeFullTime: 'Full-time',
         jobTypeRemote: 'Remote',
         viewAllJobs: 'View all jobs →',
+        // Blue Collar Jobs
+        jobConstructionWorker: 'Công nhân xây dựng',
+        jobElectrician: 'Thợ điện công nghiệp',
+        jobMechanic: 'Thợ sửa chữa xe máy',
+        jobTruckDriver: 'Tài xế tải (B2)',
+        jobWarehouseWorker: 'Nhân viên kho',
+        jobWelder: 'Thợ hàn công nghiệp',
+        companyPhuMy: 'Xây Dựng Phú Mỹ',
+        companyElectricVietnam: 'Điện Lực Việt Nam',
+        companyHondaVietnam: 'Honda Việt Nam',
+        companyTransportVietnam: 'Giao Thông Vận Tải',
+        companyLogisticsVietnam: 'Logistics Việt',
+        companyMechanicVietnam: 'Cơ Khí Vina',
         adSlotB: '[ AD SLOT B — 300×250 Rectangle ]',
         statsTitle: 'Được tin tưởng bởi chuyên gia Việt Nam',
         statJobs: '10.000+',
@@ -2584,6 +3065,7 @@
         navBrowseCompanies: 'Browse Companies',
         navSignIn: 'Sign In',
         navSignUp: 'Sign Up',
+        jobCount: 'We Have <span class="site-text-primary">208,000+</span> Live Jobs',
         heroTitle: 'Find the job that fits you',
         heroSubtitle: 'Thousands of opportunities across Vietnam',
         searchPlaceholder: '🔍 Job title, keyword, company...',
@@ -2681,7 +3163,14 @@
       // Update all elements with data-i18n
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
-        if (LANG[lang][key]) el.textContent = LANG[lang][key];
+        if (LANG[lang][key]) {
+          // Check if translation contains HTML tags
+          if (LANG[lang][key].includes('<span')) {
+            el.innerHTML = LANG[lang][key];
+          } else {
+            el.textContent = LANG[lang][key];
+          }
+        }
       });
 
       // Update placeholders
@@ -2755,18 +3244,19 @@
   <script>
     jQuery(document).ready(function($) {
       // Initialize Vietnamese Flag Carousel
-      $('.vietnamese-flag-carousel').owlCarousel({
+      var owl = $('.vietnamese-flag-carousel').owlCarousel({
         items: 1,
-        loop: true,
+        loop: false,
+        rewind: true,
         nav: false,
         dots: false,
         autoplay: true,
         autoplayTimeout: 3000,
         autoplayHoverPause: true,
-        animateIn: 'fadeIn',
-        animateOut: 'fadeOut',
         touchDrag: false,
         mouseDrag: false,
+        smartSpeed: 500,
+        fluidSpeed: true,
       });
       
       // Color fill header on scroll
